@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#008751">
+    <title>Nigeria Eye Health - CHW Platform</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <!-- Demo Mode Watermark -->
+    <div class="demo-watermark">DEMO MODE</div>
+
+    <!-- App Container -->
+    <div id="app" class="app-container">
+
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div class="login-header">
+                <div class="flag-bar"></div>
+                <h1>🏥 Nigeria Eye Health</h1>
+                <p class="subtitle">Community Health Worker Platform</p>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" placeholder="080XXXXXXXX" value="08012345678">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" value="demo123">
+                </div>
+                <div class="form-group">
+                    <label for="language">Language / Harshe</label>
+                    <select id="language" onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="ha">Hausa</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="login()">
+                    <span class="btn-text-en">Login</span>
+                    <span class="btn-text-ha" style="display:none;">Shiga</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Home Dashboard -->
+        <div id="homeScreen" class="screen">
+            <div class="header">
+                <h2>
+                    <span class="text-en">Dashboard</span>
+                    <span class="text-ha" style="display:none;">Dashboard</span>
+                </h2>
+                <div class="user-info">
+                    <span id="userName">Grace Adamu</span>
+                    <span class="status-dot" id="syncStatus" title="Online"></span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalScreenings">47</div>
+                    <div class="stat-label">
+                        <span class="text-en">Total Screenings</span>
+                        <span class="text-ha" style="display:none;">Jimlar Bincike</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="thisWeek">12</div>
+                    <div class="stat-label">
+                        <span class="text-en">This Week</span>
+                        <span class="text-ha" style="display:none;">Wannan Mako</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="referrals">8</div>
+                    <div class="stat-label">
+                        <span class="text-en">Referrals</span>
+                        <span class="text-ha" style="display:none;">Aika Marasa Lafiya</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="rank">#23</div>
+                    <div class="stat-label">
+                        <span class="text-en">LGA Rank</span>
+                        <span class="text-ha" style="display:none;">Matsayi</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary btn-large" onclick="showScreen('newScreeningScreen')">
+                    📸 <span class="text-en">New Screening</span>
+                    <span class="text-ha" style="display:none;">Bincike Sabo</span>
+                </button>
+                <button class="btn btn-secondary" onclick="showScreen('performanceScreen')">
+                    📊 <span class="text-en">My Performance</span>
+                    <span class="text-ha" style="display:none;">Ayyukan Na</span>
+                </button>
+                <button class="btn btn-secondary" onclick="showScreen('trainingScreen')">
+                    🎓 <span class="text-en">Training Modules</span>
+                    <span class="text-ha" style="display:none;">Karatun Horo</span>
+                </button>
+            </div>
+
+            <div class="sync-info">
+                <div class="sync-status-bar">
+                    <span id="syncText">
+                        <span class="text-en">✓ Synced 2 mins ago</span>
+                        <span class="text-ha" style="display:none;">✓ An aika bayanai minti 2 da suka wuce</span>
+                    </span>
+                    <button class="btn-link" onclick="toggleOnline()">
+                        <span id="connectToggleText">Go Offline (Demo)</span>
+                    </button>
+                </div>
+            </div>
+
+            <nav class="bottom-nav">
+                <button class="nav-item active" onclick="showScreen('homeScreen')">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label text-en">Home</span>
+                    <span class="nav-label text-ha" style="display:none;">Gida</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('newScreeningScreen')">
+                    <span class="nav-icon">📸</span>
+                    <span class="nav-label text-en">Screen</span>
+                    <span class="nav-label text-ha" style="display:none;">Bincike</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('performanceScreen')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label text-en">Stats</span>
+                    <span class="nav-label text-ha" style="display:none;">Kididiga</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('trainingScreen')">
+                    <span class="nav-icon">🎓</span>
+                    <span class="nav-label text-en">Learn</span>
+                    <span class="nav-label text-ha" style="display:none;">Koya</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- New Screening Screen -->
+        <div id="newScreeningScreen" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="showScreen('homeScreen')">← </button>
+                <h2>
+                    <span class="text-en">New Screening</span>
+                    <span class="text-ha" style="display:none;">Bincike Sabo</span>
+                </h2>
+            </div>
+
+            <div class="screening-workflow">
+                <div class="workflow-step active" id="step1">
+                    <h3>
+                        <span class="text-en">Step 1: Patient Information</span>
+                        <span class="text-ha" style="display:none;">Mataki 1: Bayanan Maras Lafiya</span>
+                    </h3>
+                    <div class="form-group">
+                        <label>
+                            <span class="text-en">Full Name</span>
+                            <span class="text-ha" style="display:none;">Cikakken Suna</span>
+                        </label>
+                        <input type="text" id="patientName" placeholder="Amina Bello">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <span class="text-en">Age</span>
+                            <span class="text-ha" style="display:none;">Shekaru</span>
+                        </label>
+                        <input type="number" id="patientAge" placeholder="45">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <span class="text-en">Gender</span>
+                            <span class="text-ha" style="display:none;">Jinsi</span>
+                        </label>
+                        <select id="patientGender">
+                            <option value="">Select / Zaɓa</option>
+                            <option value="F">Female / Mace</option>
+                            <option value="M">Male / Namiji</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <span class="text-en">Phone Number (Optional)</span>
+                            <span class="text-ha" style="display:none;">Lambar Waya (Ba dole ba)</span>
+                        </label>
+                        <input type="tel" id="patientPhone" placeholder="080XXXXXXXX">
+                    </div>
+                    <button class="btn btn-primary" onclick="nextStep(2)">
+                        <span class="text-en">Next: Take Photos →</span>
+                        <span class="text-ha" style="display:none;">Gaba: Ɗauki Hotuna →</span>
+                    </button>
+                </div>
+
+                <div class="workflow-step" id="step2">
+                    <h3>
+                        <span class="text-en">Step 2: Eye Photography</span>
+                        <span class="text-ha" style="display:none;">Mataki 2: Ɗaukar Hoton Ido</span>
+                    </h3>
+
+                    <div class="photo-instructions">
+                        <p>
+                            <span class="text-en">📸 Position phone 5-10cm from eye<br>💡 Ensure good lighting<br>👁️ Ask patient to look at the camera</span>
+                            <span class="text-ha" style="display:none;">📸 Sanya waya cm 5-10 daga ido<br>💡 Tabbatar da haske mai kyau<br>👁️ Tambaya marasa lafiya ya kalli kyamara</span>
+                        </p>
+                    </div>
+
+                    <div class="photo-capture">
+                        <div class="photo-box" id="rightEyeBox">
+                            <div class="photo-placeholder">
+                                <span class="text-en">Right Eye<br>Tap to Capture</span>
+                                <span class="text-ha" style="display:none;">Ido Na Dama<br>Danna don Ɗauka</span>
+                            </div>
+                            <input type="file" id="rightEyeInput" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoCapture('right', this)">
+                            <button class="btn btn-outline" onclick="document.getElementById('rightEyeInput').click()">
+                                📸 <span class="text-en">Capture Right Eye</span>
+                                <span class="text-ha" style="display:none;">Ɗauki Ido Na Dama</span>
+                            </button>
+                        </div>
+
+                        <div class="photo-box" id="leftEyeBox">
+                            <div class="photo-placeholder">
+                                <span class="text-en">Left Eye<br>Tap to Capture</span>
+                                <span class="text-ha" style="display:none;">Ido Na Hagu<br>Danna don Ɗauka</span>
+                            </div>
+                            <input type="file" id="leftEyeInput" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoCapture('left', this)">
+                            <button class="btn btn-outline" onclick="document.getElementById('leftEyeInput').click()">
+                                📸 <span class="text-en">Capture Left Eye</span>
+                                <span class="text-ha" style="display:none;">Ɗauki Ido Na Hagu</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="nextStep(1)">
+                            <span class="text-en">← Back</span>
+                            <span class="text-ha" style="display:none;">← Komawa</span>
+                        </button>
+                        <button class="btn btn-primary" id="analyzeBtn" disabled onclick="nextStep(3)">
+                            <span class="text-en">Analyze Photos →</span>
+                            <span class="text-ha" style="display:none;">Nazarin Hotuna →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="workflow-step" id="step3">
+                    <h3>
+                        <span class="text-en">Step 3: AI Analysis & Results</span>
+                        <span class="text-ha" style="display:none;">Mataki 3: Nazarin AI da Sakamako</span>
+                    </h3>
+
+                    <div class="analysis-progress" id="analysisProgress">
+                        <div class="spinner"></div>
+                        <p>
+                            <span class="text-en">AI analyzing images...<br>This may take 10-30 seconds</span>
+                            <span class="text-ha" style="display:none;">AI yana nazarin hotuna...<br>Wannan na iya ɗaukar daƙiƙa 10-30</span>
+                        </p>
+                    </div>
+
+                    <div class="analysis-results" id="analysisResults" style="display:none;">
+                        <div class="result-card alert-warning">
+                            <h4>⚠️ <span class="text-en">Screening Result</span>
+                            <span class="text-ha" style="display:none;">Sakamakon Bincike</span></h4>
+                            <p class="result-message">
+                                <span class="text-en"><strong>Possible Cataract Detected - Right Eye</strong><br>
+                                Confidence: 87%<br><br>
+                                Recommendation: Refer to eye clinic for confirmation</span>
+                                <span class="text-ha" style="display:none;"><strong>An Gano Karatara - Ido Na Dama</strong><br>
+                                Kwarin Gwiwa: 87%<br><br>
+                                Shawarwari: Aika zuwa asibitin ido don tabbatarwa</span>
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <span class="text-en">Additional Notes (Optional)</span>
+                                <span class="text-ha" style="display:none;">Ƙarin Bayanai (Ba dole ba)</span>
+                            </label>
+                            <textarea id="screeningNotes" rows="3" placeholder="Patient reports blurred vision for 6 months..."></textarea>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-secondary" onclick="nextStep(2)">
+                                <span class="text-en">← Retake Photos</span>
+                                <span class="text-ha" style="display:none;">← Sake Ɗauka Hotuna</span>
+                            </button>
+                            <button class="btn btn-primary" onclick="submitScreening()">
+                                <span class="text-en">✓ Submit Screening</span>
+                                <span class="text-ha" style="display:none;">✓ Aika Bincike</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Screen -->
+        <div id="performanceScreen" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="showScreen('homeScreen')">←</button>
+                <h2>
+                    <span class="text-en">My Performance</span>
+                    <span class="text-ha" style="display:none;">Ayyukan Na</span>
+                </h2>
+            </div>
+
+            <div class="performance-container">
+                <div class="achievement-badge">
+                    <div class="badge-icon">🥈</div>
+                    <h3>
+                        <span class="text-en">Silver Level</span>
+                        <span class="text-ha" style="display:none;">Matsayi na Azurfa</span>
+                    </h3>
+                    <p>
+                        <span class="text-en">47 screenings completed<br>On track for Gold! (50 needed)</span>
+                        <span class="text-ha" style="display:none;">Bincike 47 an kammala<br>Kana kan hanya zuwa Zinari! (Ana buƙatar 50)</span>
+                    </p>
+                </div>
+
+                <div class="stat-detail-card">
+                    <h4>
+                        <span class="text-en">This Month's Activity</span>
+                        <span class="text-ha" style="display:none;">Ayyukan Wannan Wata</span>
+                    </h4>
+                    <div class="stat-row">
+                        <span class="text-en">Total Screenings:</span>
+                        <span class="text-ha" style="display:none;">Jimlar Bincike:</span>
+                        <strong>47</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span class="text-en">Referrals Made:</span>
+                        <span class="text-ha" style="display:none;">Aika Marasa Lafiya:</span>
+                        <strong>8</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span class="text-en">Data Quality Score:</span>
+                        <span class="text-ha" style="display:none;">Maki Ingancin Bayanai:</span>
+                        <strong>94%</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span class="text-en">Training Modules Completed:</span>
+                        <span class="text-ha" style="display:none;">Darussa Da Aka Kammala:</span>
+                        <strong>4 / 5</strong>
+                    </div>
+                </div>
+
+                <div class="leaderboard-card">
+                    <h4>
+                        <span class="text-en">🏆 LGA Leaderboard (Kano North)</span>
+                        <span class="text-ha" style="display:none;">🏆 Jerin Matsayi (Kano Arewa)</span>
+                    </h4>
+                    <div class="leaderboard-list">
+                        <div class="leaderboard-item">
+                            <span class="rank">1.</span>
+                            <span class="name">Ibrahim Mohammed</span>
+                            <span class="score">62</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">2.</span>
+                            <span class="name">Fatima Usman</span>
+                            <span class="score">51</span>
+                        </div>
+                        <div class="leaderboard-item highlight">
+                            <span class="rank">23.</span>
+                            <span class="name">Grace Adamu (You)</span>
+                            <span class="score">47</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">24.</span>
+                            <span class="name">Aisha Bello</span>
+                            <span class="score">46</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">25.</span>
+                            <span class="name">John Okafor</span>
+                            <span class="score">44</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="incentive-progress">
+                    <h4>
+                        <span class="text-en">💰 Incentive Progress</span>
+                        <span class="text-ha" style="display:none;">💰 Ci Gaban Lada</span>
+                    </h4>
+                    <p>
+                        <span class="text-en">You've earned Silver tier bonus!<br>3 more screenings to reach Gold tier (₦50,000 bonus)</span>
+                        <span class="text-ha" style="display:none;">Ka sami ladan Azurfa!<br>Bincike 3 kara don kaiwa Zinari (₦50,000 lada)</span>
+                    </p>
+                </div>
+            </div>
+
+            <nav class="bottom-nav">
+                <button class="nav-item" onclick="showScreen('homeScreen')">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label text-en">Home</span>
+                    <span class="nav-label text-ha" style="display:none;">Gida</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('newScreeningScreen')">
+                    <span class="nav-icon">📸</span>
+                    <span class="nav-label text-en">Screen</span>
+                    <span class="nav-label text-ha" style="display:none;">Bincike</span>
+                </button>
+                <button class="nav-item active" onclick="showScreen('performanceScreen')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label text-en">Stats</span>
+                    <span class="nav-label text-ha" style="display:none;">Kididiga</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('trainingScreen')">
+                    <span class="nav-icon">🎓</span>
+                    <span class="nav-label text-en">Learn</span>
+                    <span class="nav-label text-ha" style="display:none;">Koya</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Training Screen -->
+        <div id="trainingScreen" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="showScreen('homeScreen')">←</button>
+                <h2>
+                    <span class="text-en">Training Modules</span>
+                    <span class="text-ha" style="display:none;">Darussan Horo</span>
+                </h2>
+            </div>
+
+            <div class="training-container">
+                <div class="training-module completed">
+                    <div class="module-icon">✓</div>
+                    <div class="module-info">
+                        <h4>
+                            <span class="text-en">Module 1: Introduction to Eye Health</span>
+                            <span class="text-ha" style="display:none;">Darasi 1: Gabatarwa ga Lafiyar Ido</span>
+                        </h4>
+                        <p>
+                            <span class="text-en">Completed on Oct 15, 2025</span>
+                            <span class="text-ha" style="display:none;">An kammala a ranar Oktoba 15, 2025</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="training-module completed">
+                    <div class="module-icon">✓</div>
+                    <div class="module-info">
+                        <h4>
+                            <span class="text-en">Module 2: Using the Mobile App</span>
+                            <span class="text-ha" style="display:none;">Darasi 2: Amfani da Mobile App</span>
+                        </h4>
+                        <p>
+                            <span class="text-en">Completed on Oct 18, 2025</span>
+                            <span class="text-ha" style="display:none;">An kammala a ranar Oktoba 18, 2025</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="training-module completed">
+                    <div class="module-icon">✓</div>
+                    <div class="module-info">
+                        <h4>
+                            <span class="text-en">Module 3: Photography Techniques</span>
+                            <span class="text-ha" style="display:none;">Darasi 3: Dabarun Daukar Hoto</span>
+                        </h4>
+                        <p>
+                            <span class="text-en">Completed on Oct 22, 2025</span>
+                            <span class="text-ha" style="display:none;">An kammala a ranar Oktoba 22, 2025</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="training-module completed">
+                    <div class="module-icon">✓</div>
+                    <div class="module-info">
+                        <h4>
+                            <span class="text-en">Module 4: Identifying Common Eye Conditions</span>
+                            <span class="text-ha" style="display:none;">Darasi 4: Gano Cututtukan Ido</span>
+                        </h4>
+                        <p>
+                            <span class="text-en">Completed on Oct 25, 2025</span>
+                            <span class="text-ha" style="display:none;">An kammala a ranar Oktoba 25, 2025</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="training-module pending">
+                    <div class="module-icon">5</div>
+                    <div class="module-info">
+                        <h4>
+                            <span class="text-en">Module 5: Patient Communication & Referrals</span>
+                            <span class="text-ha" style="display:none;">Darasi 5: Sadarwa da Marasa Lafiya & Aika</span>
+                        </h4>
+                        <p>
+                            <span class="text-en">Not started · 15 minutes</span>
+                            <span class="text-ha" style="display:none;">Ba a fara ba · minti 15</span>
+                        </p>
+                    </div>
+                    <button class="btn btn-primary btn-small">
+                        <span class="text-en">Start</span>
+                        <span class="text-ha" style="display:none;">Fara</span>
+                    </button>
+                </div>
+
+                <div class="certification-info">
+                    <h4>
+                        <span class="text-en">🎓 Certification Progress</span>
+                        <span class="text-ha" style="display:none;">🎓 Ci Gaban Takardun Sheda</span>
+                    </h4>
+                    <p>
+                        <span class="text-en">Complete all 5 modules + 50 screenings to earn your <strong>Digital Eye Health Screener Certificate</strong></span>
+                        <span class="text-ha" style="display:none;">Kammala darussa 5 + bincike 50 don samun <strong>Takardun Sheda na Binciken Lafiyar Ido na Dijital</strong></span>
+                    </p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+                    <p class="progress-text">
+                        <span class="text-en">80% Complete (1 module + 3 screenings remaining)</span>
+                        <span class="text-ha" style="display:none;">80% An Kammala (darasi 1 + bincike 3 sun rage)</span>
+                    </p>
+                </div>
+            </div>
+
+            <nav class="bottom-nav">
+                <button class="nav-item" onclick="showScreen('homeScreen')">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label text-en">Home</span>
+                    <span class="nav-label text-ha" style="display:none;">Gida</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('newScreeningScreen')">
+                    <span class="nav-icon">📸</span>
+                    <span class="nav-label text-en">Screen</span>
+                    <span class="nav-label text-ha" style="display:none;">Bincike</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('performanceScreen')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label text-en">Stats</span>
+                    <span class="nav-label text-ha" style="display:none;">Kididiga</span>
+                </button>
+                <button class="nav-item active" onclick="showScreen('trainingScreen')">
+                    <span class="nav-icon">🎓</span>
+                    <span class="nav-label text-en">Learn</span>
+                    <span class="nav-label text-ha" style="display:none;">Koya</span>
+                </button>
+            </nav>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
